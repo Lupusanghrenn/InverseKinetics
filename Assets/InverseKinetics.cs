@@ -6,7 +6,7 @@ public class InverseKinetics : MonoBehaviour
 {
 
     public List<Vector3> points;
-    public List<float> angle;
+    public List<float> angles;
     public Vector3 target;
 
     // Start is called before the first frame update
@@ -47,10 +47,28 @@ public class InverseKinetics : MonoBehaviour
         for(int i = newPoints.Count - 2; i >= 0; i--)
         {
             Vector3 direction = pts[i] - newPoints[i + 1];//Vector ab = b-a
-            //direction.Normalize();
             Vector3 directionNOrm = Vector3.Normalize(direction);
+
             float norme = (pts[i+1] - pts[i]).magnitude;
             newPoints[i] = newPoints[i+1] + norme * directionNOrm;
+
+            //contraintes d angle
+            float angleCurrent = Mathf.Rad2Deg * Mathf.Atan2(directionNOrm.y, directionNOrm.x);
+            float anglePrevious = 0;
+            if (i > 0)
+            {
+                Vector3 directionPrevious = newPoints[i-1] - newPoints[i];//Vector ab = b-a
+                directionPrevious.Normalize();
+                anglePrevious = Mathf.Rad2Deg * Mathf.Atan2(directionPrevious.y, directionPrevious.x);
+            }
+
+            float angle = angleCurrent - anglePrevious;
+
+            if (angle > angles[i])
+            {
+                //on bouge les trucs mais samere comment
+                Debug.Log("angle" + i);
+            }
         }
 
         return newPoints;

@@ -4,3 +4,7 @@
 Library/
 
 ProjectSettings/
+
+Temp/
+
+.vs/InverseKinetics/v16/Server/sqlite3/
